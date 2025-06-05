@@ -1,0 +1,207 @@
+package dio2;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+ Scanner entrada = new Scanner(System.in);
+  int opcao = 0;
+
+            System.out.println("Menu: \n 1 - Cadastrar Tutor \n 2 - Cadastrar Veterinario \n 3 - Registrar Animal \n "
+            		+ "4 - registrar Consultas de Tutor\n 5 - ver consulta \n 6 - Sair \n Escolha: ");
+
+            opcao = entrada.nextInt();          
+            entrada.nextLine();
+
+            switch (opcao) {
+            case 1:
+            	Tutor.cadastrarTutor();
+            	break;
+            
+            case 2:
+                Veterinario.cadastrarMedico();
+                break;
+                
+            case 3:
+            	Animal.cadastraranimal();
+            	break;
+            	
+            	
+            case 4:
+            	Recepcionista.registrarConsulta();
+            	break;
+            	
+            case 5:
+            	Recepcionista.consultasanimal();
+            	break;
+            	
+            case 6:
+                System.out.println("Sistema encerrado.");
+                System.exit(0);
+                    default : 
+                   System.out.println("valor invalido.");
+            
+            }}} 
+   
+package dio2;
+import java.util.Scanner;
+public class Tutor {
+		public static Scanner a = new Scanner(System.in);
+
+		public static String[] nometutor = new String [255], cpftutor = new String [255];
+
+		public static int numerotutor = 0;
+
+			public static void cadastrarTutor() {
+				
+				System.out.println("Nome do Tutor:");
+		        nometutor[numerotutor] = a.nextLine();
+
+		        System.out.println("CPF:");
+		        cpftutor[numerotutor] = a.nextLine();
+		        numerotutor ++;
+		        
+		        System.out.println("Tutor cadastrado.");
+		        Main.main(null);
+			}
+}
+
+
+
+package dio2;
+import java.util.Scanner;
+public class Veterinario {
+public static Scanner a = new Scanner(System.in);
+
+public static String []nomeV = new String[255],especialidadeV = new String [255];
+
+
+public static int numeroMedicos = 0;
+
+
+	public static void cadastrarMedico() {
+		System.out.println("Nome do Veterinario:");
+        nomeV[numeroMedicos] = a.nextLine();
+
+        System.out.println("Especialidade:");
+        especialidadeV[numeroMedicos] = a.nextLine();
+
+        numeroMedicos ++;
+        System.out.println("Veterinario cadastrado!");
+        
+        Main.main(null);
+
+}}
+package dio2;
+import java.util.Scanner;
+public class Animal {
+public static Scanner animal = new Scanner (System.in);
+
+public static String[] nomeanimal = new String[255], especianimal= new String[255],sexoanimal = new String[255];
+public static int[] idadeanimal= new int[255] ;
+
+public static int numeroanimal = 0;
+
+public static void cadastraranimal() {
+	
+	System.out.println("Nome do animal:");
+    nomeanimal[numeroanimal] = animal.nextLine();
+
+    System.out.println("Especie do animal:");
+    especianimal[numeroanimal] = animal.nextLine();
+    
+    System.out.println("sexo do animal:");
+    sexoanimal[numeroanimal]= animal.nextLine();
+    
+    System.out.println("Idade do animal:");
+    idadeanimal[numeroanimal] = animal.nextInt();
+    animal.nextLine(); 
+    numeroanimal++;
+    
+    System.out.println("animal cadastrado.");
+    Main.main(null);
+
+}
+
+package dio2;
+
+import java.util.Scanner;
+
+public class Recepcionista {
+
+    private String[] consultastutor = new String[255];
+    private Scanner scanner = new Scanner(System.in);
+
+    public void registrarConsulta() {
+        System.out.println("CPF do Tutor:");
+        String cpfConsulta = scanner.nextLine();
+
+        System.out.println("Nome do animal:");
+        String nomea = scanner.nextLine();
+
+        System.out.println("Nome do Veterinario:");
+        String VConsulta = scanner.nextLine();
+
+        int indice = -1;
+
+        for (int i = 0; i < Tutor.getNumerotutor(); i++) {
+            if (cpfConsulta.equalsIgnoreCase(Tutor.getCpftutor(i)) &&
+                VConsulta.equalsIgnoreCase(Veterinario.getNomeV(i))) {
+                indice = i;
+                break;
+            }
+        }
+
+        if (indice != -1) {
+            System.out.println("Ano da consulta:");
+            int ano = scanner.nextInt();
+
+            System.out.println("Mês da consulta:");
+            int mes = scanner.nextInt();
+
+            System.out.println("Dia da consulta:");
+            int dia = scanner.nextInt();
+            scanner.nextLine(); // limpar buffer
+
+            String data = dia + "/" + mes + "/" + ano;
+
+            if (this.consultastutor[indice] == null) {  // usando this para acessar atributo da instância
+                this.consultastutor[indice] = "";
+            }
+
+            this.consultastutor[indice] += "\nAnimal: " + nomea + " - Data: " + data + " - Veterinário: " + VConsulta;
+
+            System.out.println("Consulta registrada.");
+        } else {
+            System.out.println("Tutor ou veterinário não encontrados.");
+        }
+
+        // Aqui você pode chamar outra ação, sem usar Main.main(null)
+    }
+
+    public void consultasanimal() {
+        System.out.println("CPF do tutor:");
+        String cpfConsulta = scanner.nextLine();
+
+        int indice = -1;
+
+        for (int i = 0; i < Tutor.getNumerotutor(); i++) {
+            if (cpfConsulta.equalsIgnoreCase(Tutor.getCpftutor(i))) {
+                indice = i;
+                break;
+            }
+        }
+
+        if (indice != -1) {
+            if (this.consultastutor[indice] != null) {
+                System.out.println("Consultas do tutor:\n" + this.consultastutor[indice]);
+            } else {
+                System.out.println("Nenhuma consulta registrada para este tutor.");
+            }
+        } else {
+            System.out.println("Tutor não encontrado.");
+        }
+    }
+}
